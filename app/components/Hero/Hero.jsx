@@ -49,6 +49,7 @@ const Hero = () => {
                                 height={150}
                                 src={"/food3.png"}
                                 alt='food image'
+                                className='pt-5'
                             />
                             <Image 
                                 width={130}
