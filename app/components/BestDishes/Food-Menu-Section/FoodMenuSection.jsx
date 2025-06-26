@@ -96,7 +96,7 @@ const FoodMenuSection = () => {
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden group"
+            className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden group"
           >
             {/* Image Container */}
             <div className="relative h-48 bg-gradient-to-br from-pink-100 to-green-100 overflow-hidden">
@@ -122,12 +122,15 @@ const FoodMenuSection = () => {
               </div>
 
               {/* Rating */}
-              <div className="flex items-center gap-1 mb-3">
-                {renderStars(item.rating)}
-                <span className="text-sm text-gray-600 ml-1">({item.rating}.0)</span>
-                <div className="text-lg font-bold text-gray-900">
-                  ${item.price}
+              <div className='flex justify-between pt-2'>
+                <div className="flex items-center gap-1 mb-3">
+                    {renderStars(item.rating)}
+                    <span className="text-sm text-gray-600 ml-1">({item.rating}.0)   
+                    </span>
                 </div>
+                    <div className="text-lg font-bold text-gray-900">
+                        ${item.price}
+                    </div>
               </div>
 
               {/* Description */}

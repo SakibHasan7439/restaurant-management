@@ -1,4 +1,5 @@
 import BestDishes from "./components/BestDishes/BestDishes";
+import CustomerReview from "./components/Customer-review/CustomerReview";
 import Hero from "./components/Hero/Hero";
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
         {/* Hero section*/}
         <Hero />
         <BestDishes />
+        <CustomerReview />
     </div>
   );
 }

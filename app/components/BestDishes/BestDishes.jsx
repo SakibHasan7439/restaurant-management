@@ -5,7 +5,7 @@ import FoodMenuSection from './Food-Menu-Section/FoodMenuSection';
 
 const BestDishes = () => {
     return (
-        <div className='max-w-7xl mx-auto pt-[152px]'>
+        <div className='max-w-6xl mx-auto pt-[152px]'>
             <SectionTitle />
             <FoodMenuSection />
         </div>
