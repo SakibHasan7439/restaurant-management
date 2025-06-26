@@ -1,3 +1,4 @@
+import BestDishes from "./components/BestDishes/BestDishes";
 import Hero from "./components/Hero/Hero";
 
 export default function Home() {
@@ -5,6 +6,7 @@ export default function Home() {
     <div>
         {/* Hero section*/}
         <Hero />
+        <BestDishes />
     </div>
   );
 }
