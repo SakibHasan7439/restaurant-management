@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, Plus } from "lucide-react";
 import { Modal } from "antd";
 import axios from "axios";
+import toast from "react-hot-toast";
+import Image from "next/image";
 
 
 const FoodMenuSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [food, setFood] = useState({name: '', category: "Breakfast", image: null});
+  const [realFoodItems, setRealFoodItems] = useState([]);
+  console.log(realFoodItems);
+  const [food, setFood] = useState({name: '', category: "Breakfast", price: "", image: null});
 
     const handleSubmitForm = async (e) => {
     e.preventDefault();
@@ -26,18 +30,19 @@ const FoodMenuSection = () => {
         axios.post('/api/food', {
           name: food.name,
           category: food.category,
+          price: food.price,
           image: imageURL
         });
 
         // reset form values
-        setFood({name: '', category: "Breakfast", image: null});
+        setFood({name: '', category: "Breakfast", price: "", image: null});
+        toast.success("Food added successfully");
 
       }catch(error){
        console.log(error);
+       toast.error("Error found!");
       }
     }
-  
-
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -52,37 +57,52 @@ const FoodMenuSection = () => {
 
   const categories = ["All", "Breakfast", "Lunch", "Dinner"];
 
-  const foodItems = [
-    {
-      id: 1,
-      name: "Salad Fry",
-      category: "Breakfast",
-      price: 230,
-      rating: 5,
-      image: "/api/placeholder/300/200",
-    },
-    {
-      id: 2,
-      name: "Chicken Breast",
-      category: "Lunch",
-      price: 230,
-      rating: 5,
-      image: "/api/placeholder/300/200",
-    },
-    {
-      id: 3,
-      name: "Chicken Legs",
-      category: "Dinner",
-      price: 230,
-      rating: 5,
-      image: "/api/placeholder/300/200",
-    },
-  ];
+  // get foods from backend
+  useEffect(()=>{
+    const fetchData = async () =>{
+      try{
+        const res = await axios.get('/api/food');
+        setRealFoodItems(res?.data);
+
+      }catch(err){
+        toast.error(err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // const foodItems = [
+  //   {
+  //     id: 1,
+  //     name: "Salad Fry",
+  //     category: "Breakfast",
+  //     price: 230,
+  //     rating: 5,
+  //     image: "/api/placeholder/300/200",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Chicken Breast",
+  //     category: "Lunch",
+  //     price: 230,
+  //     rating: 5,
+  //     image: "/api/placeholder/300/200",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Chicken Legs",
+  //     category: "Dinner",
+  //     price: 230,
+  //     rating: 5,
+  //     image: "/api/placeholder/300/200",
+  //   },
+  // ];
 
   const filteredItems =
     activeCategory === "All"
-      ? foodItems
-      : foodItems.filter((item) => item.category === activeCategory);
+      ? realFoodItems
+      : realFoodItems.filter((item) => item.category === activeCategory);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -166,6 +186,14 @@ const FoodMenuSection = () => {
                 </select>
 
                 <input
+                  type="number"
+                  placeholder="Food Price"
+                  value={food.price}
+                  onChange={(e) => setFood({ ...food, price: e.target.value })}
+                  required
+                />
+
+                <input
                   type="file"
                   accept="image/*"
                   onChange={(e) =>
@@ -191,15 +219,15 @@ const FoodMenuSection = () => {
             key={item.id}
             className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden group"
           >
-            {/* Image Container */}
-            <div className="relative h-48 bg-gradient-to-br from-pink-100 to-green-100 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-200/50 to-green-200/50"></div>
-              <div className="relative h-full flex items-center justify-center">
-                {/* Placeholder for food image */}
-                <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center">
-                  <div className="text-4xl">🍽️</div>
-                </div>
-              </div>
+
+            <div>
+                <Image 
+                  width={300}
+                  height={267}
+                  src={item?.image}
+                  alt="food image"
+                  className="w-full object-cover"
+                />
             </div>
             {/* Content */}
             <div className="p-6">
