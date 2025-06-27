@@ -1,48 +1,95 @@
-import { useState } from 'react';
-import { Star, Plus } from 'lucide-react';
+"use client";
+
+import { useState } from "react";
+import { Star, Plus } from "lucide-react";
+import { Modal } from "antd";
+import axios from "axios";
+
 
 const FoodMenuSection = () => {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [food, setFood] = useState({name: '', category: "Breakfast", image: null});
 
-  const categories = ['All', 'Breakfast', 'Lunch', 'Dinner'];
+    const handleSubmitForm = async (e) => {
+    e.preventDefault();
   
+      try{
+        const imgForm = new FormData();
+        imgForm.append("image", food.image);
+
+        const imgResult = await axios.post(
+          `https://api.imgbb.com/1/upload?key=742173e974786a75c1874cd959538aed`, imgForm
+        );
+
+        const imageURL = imgResult.data.data.url;
+        // send data to backend
+        axios.post('/api/food', {
+          name: food.name,
+          category: food.category,
+          image: imageURL
+        });
+
+        // reset form values
+        setFood({name: '', category: "Breakfast", image: null});
+
+      }catch(error){
+       console.log(error);
+      }
+    }
+  
+
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const categories = ["All", "Breakfast", "Lunch", "Dinner"];
+
   const foodItems = [
     {
       id: 1,
-      name: 'Salad Fry',
-      category: 'Breakfast',
+      name: "Salad Fry",
+      category: "Breakfast",
       price: 230,
       rating: 5,
-      image: '/api/placeholder/300/200',
+      image: "/api/placeholder/300/200",
     },
     {
       id: 2,
-      name: 'Chicken Breast',
-      category: 'Lunch',
+      name: "Chicken Breast",
+      category: "Lunch",
       price: 230,
       rating: 5,
-      image: '/api/placeholder/300/200',
+      image: "/api/placeholder/300/200",
     },
     {
       id: 3,
-      name: 'Chicken Legs',
-      category: 'Dinner',
+      name: "Chicken Legs",
+      category: "Dinner",
       price: 230,
       rating: 5,
-      image: '/api/placeholder/300/200',
-    }
+      image: "/api/placeholder/300/200",
+    },
   ];
 
-  const filteredItems = activeCategory === 'All' 
-    ? foodItems 
-    : foodItems.filter(item => item.category === activeCategory);
+  const filteredItems =
+    activeCategory === "All"
+      ? foodItems
+      : foodItems.filter((item) => item.category === activeCategory);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <Star
         key={index}
         className={`w-4 h-4 ${
-          index < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+          index < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
         }`}
       />
     ));
@@ -50,11 +97,11 @@ const FoodMenuSection = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      'Breakfast': 'bg-red-500',
-      'Lunch': 'bg-red-500',
-      'Dinner': 'bg-red-500'
+      Breakfast: "bg-red-500",
+      Lunch: "bg-red-500",
+      Dinner: "bg-red-500",
     };
-    return colors[category] || 'bg-gray-500';
+    return colors[category] || "bg-gray-500";
   };
 
   return (
@@ -69,8 +116,8 @@ const FoodMenuSection = () => {
               onClick={() => setActiveCategory(category)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                 activeCategory === category
-                  ? 'bg-gray-900 text-white shadow-lg'
-                  : 'border rounded-2xl'
+                  ? "bg-gray-900 text-white shadow-lg"
+                  : "border rounded-2xl"
               }`}
             >
               {category}
@@ -80,11 +127,57 @@ const FoodMenuSection = () => {
 
         {/* Action Buttons */}
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-6 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors duration-200 text-sm font-medium">
+          <button
+            onClick={showModal}
+            className="flex cursor-pointer items-center gap-2 px-6 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors duration-200 text-sm font-medium"
+          >
             <Plus className="w-4 h-4" />
             Add Food
           </button>
-          <button className="flex items-center gap-2 px-6 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors duration-200 text-sm font-medium">
+          <Modal
+            closable={{ "aria-label": "Custom Close Button" }}
+            open={isModalOpen}
+            width={250}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            classNames={"bg-gray-200 inset-0 opacity-40 backdrop-blur-sm"}
+          >
+            <div>
+              <h4 className="text-center text-xl mb-4">Add Food</h4>
+              <form onSubmit={handleSubmitForm} className="flex flex-col gap-4">
+                <input
+                  type="text"
+                  placeholder="Food Name"
+                  value={food.name}
+                  onChange={(e) => setFood({ ...food, name: e.target.value })}
+                  required
+                />
+
+                <select
+                  value={food.category}
+                  onChange={(e) =>
+                    setFood({ ...food, category: e.target.value })
+                  }
+                  required
+                >
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                </select>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setFood({ ...food, image: e.target.files[0] })
+                  }
+                  required
+                />
+                <button className="border rounded px-3 py-2" type="submit">Save</button>
+              </form>
+            </div>
+          </Modal>
+          <button className="flex items-center cursor-pointer gap-2 px-6 py-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors duration-200 text-sm font-medium">
             <Plus className="w-4 h-4" />
             Add Category
           </button>
@@ -115,22 +208,27 @@ const FoodMenuSection = () => {
                   {item.name}
                 </h3>
                 <div>
-                <span className={`px-3 py-1 text-xs font-medium text-white rounded-full ${getCategoryColor(item.category)}`}>
-                  {item.category}
-                </span>
-              </div>
+                  <span
+                    className={`px-3 py-1 text-xs font-medium text-white rounded-full ${getCategoryColor(
+                      item.category
+                    )}`}
+                  >
+                    {item.category}
+                  </span>
+                </div>
               </div>
 
               {/* Rating */}
-              <div className='flex justify-between pt-2'>
+              <div className="flex justify-between pt-2">
                 <div className="flex items-center gap-1 mb-3">
-                    {renderStars(item.rating)}
-                    <span className="text-sm text-gray-600 ml-1">({item.rating}.0)   
-                    </span>
+                  {renderStars(item.rating)}
+                  <span className="text-sm text-gray-600 ml-1">
+                    ({item.rating}.0)
+                  </span>
                 </div>
-                    <div className="text-lg font-bold text-gray-900">
-                        ${item.price}
-                    </div>
+                <div className="text-lg font-bold text-gray-900">
+                  ${item.price}
+                </div>
               </div>
 
               {/* Description */}
@@ -146,8 +244,13 @@ const FoodMenuSection = () => {
       {filteredItems.length === 0 && (
         <div className="text-center py-12">
           <div className="text-4xl mb-4">🍽️</div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No items found</h3>
-          <p className="text-gray-600">No food items available in the {activeCategory.toLowerCase()} category.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No items found
+          </h3>
+          <p className="text-gray-600">
+            No food items available in the {activeCategory.toLowerCase()}{" "}
+            category.
+          </p>
         </div>
       )}
     </div>

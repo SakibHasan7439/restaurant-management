@@ -47,7 +47,7 @@ const Partners = () => {
                     <Image 
                         width={123}
                         height={128}
-                        src={"/image6.png"}   
+                        src={"/image5.png"}   
                         alt="partner image" 
                         className="mx-8"
                     />
