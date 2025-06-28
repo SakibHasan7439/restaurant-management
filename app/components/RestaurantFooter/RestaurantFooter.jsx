@@ -5,7 +5,7 @@ import ImageFooter from './ImageFooter';
 const RestaurantFooter = () => {
 
   return (
-    <footer className="bg-red-800 text-white">
+    <footer className="bg-[#880808] text-white">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -75,7 +75,7 @@ const RestaurantFooter = () => {
           {/* Links */}
           <div className="lg:col-span-1">
             <h3 className="text-xl font-bold mb-6">Links</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 flex items-center gap-4 flex-wrap">
               <li><a href="#" className="text-red-100 hover:text-white transition-colors">About us</a></li>
               <li><a href="#" className="text-red-100 hover:text-white transition-colors">Contact Us</a></li>
               <li><a href="#" className="text-red-100 hover:text-white transition-colors">Our Menu</a></li>
@@ -85,7 +85,7 @@ const RestaurantFooter = () => {
           </div>
 
           {/* Instagram Gallery */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 hidden lg:block">
             <h3 className="text-xl font-bold mb-6">Instagram Gallery</h3>
                 <ImageFooter />
           </div>
@@ -93,7 +93,7 @@ const RestaurantFooter = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="border-t border-red-700">
+      <div className="bg-[#A52A2A]">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-red-200 text-sm">

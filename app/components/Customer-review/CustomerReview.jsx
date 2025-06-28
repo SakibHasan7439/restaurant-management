@@ -9,9 +9,9 @@ import Image from 'next/image';
 const CustomerReview = () => {
     return (
         <div className='max-w-6xl w-full mx-auto'>
-            <div className='flex items-center justify-center'>
-                <div className='w-[664px]'>
-                    <h2 className='text-[50px] font-bold pb-[15px]'>Customer 
+            <div className='flex flex-col lg:flex-row items-center justify-center'>
+                <div className='w-[300px] lg:w-[664px]'>
+                    <h2 className='text-[30px] lg:text-[50px] font-bold pb-[15px]'>Customer 
                         <span className='text-[#AD1519]'> Feedback</span>
                     </h2>
                     <Swiper

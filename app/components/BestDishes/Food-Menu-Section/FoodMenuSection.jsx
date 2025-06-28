@@ -157,7 +157,7 @@ const FoodMenuSection = () => {
           <Modal
             closable={{ "aria-label": "Custom Close Button" }}
             open={isModalOpen}
-            width={250}
+            width={260}
             onOk={handleOk}
             onCancel={handleCancel}
             classNames={"bg-gray-200 inset-0 opacity-40 backdrop-blur-sm"}
@@ -168,12 +168,14 @@ const FoodMenuSection = () => {
                 <input
                   type="text"
                   placeholder="Food Name"
+                  className="border rounded-2xl p-2"
                   value={food.name}
                   onChange={(e) => setFood({ ...food, name: e.target.value })}
                   required
                 />
 
                 <select
+                  className="border rounded-2xl p-2"
                   value={food.category}
                   onChange={(e) =>
                     setFood({ ...food, category: e.target.value })
@@ -187,6 +189,7 @@ const FoodMenuSection = () => {
 
                 <input
                   type="number"
+                  className="border rounded-2xl p-2"
                   placeholder="Food Price"
                   value={food.price}
                   onChange={(e) => setFood({ ...food, price: e.target.value })}
@@ -196,6 +199,7 @@ const FoodMenuSection = () => {
                 <input
                   type="file"
                   accept="image/*"
+                  className="border border-dashed rounded-xl p-2"
                   onChange={(e) =>
                     setFood({ ...food, image: e.target.files[0] })
                   }
@@ -226,7 +230,7 @@ const FoodMenuSection = () => {
                   height={267}
                   src={item?.image}
                   alt="food image"
-                  className="w-full object-cover"
+                  className="w-full object-cover h-[267px]"
                 />
             </div>
             {/* Content */}

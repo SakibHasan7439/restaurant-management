@@ -3,7 +3,7 @@ import React from 'react';
 const SectionTitle = () => {
     return (
         <div className='max-w-[852px] mx-auto text-center pb-[68px]'>
-            <h2 className='text-[55px] pb-[18px] font-bold text-[#1F1F1F]'>
+            <h2 className='text-[30px] lg:text-[55px] pb-[18px] font-bold text-[#1F1F1F]'>
                 Our best Seller Dishes
             </h2>
             <p className='text-[25px] text-[#5C5C5C]'>

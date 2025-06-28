@@ -36,3 +36,26 @@ body {
   padding-right: 10px;
   padding-left: 50px;
 }
+
+@media screen and (max-width: 540px) {
+    .input-field {
+      width: 100%;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .smallDiv {
+      width: 100%;
+    }
+}
+
+@media screen and (max-width: 890px) {
+  .hiddenTitle {
+    display: none;
+  }
+}
+
+.ant-modal-content {
+  background-color: green;
+  backdrop-filter: blur(5px);
+}
